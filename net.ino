@@ -11,8 +11,8 @@
 #include <MQTTClient.h>
 
 // WiFi Settings
-const char ssid[] = "MuDA";
-const char pass[] = "MPRERWKK7WRME";
+const char ssid[] = "blup";
+const char pass[] = "blupblup";
 
 WiFiClientSecure net;
 MQTTClient client;
@@ -26,15 +26,19 @@ void netInit() {
 void netConnect() {
   Serial.print("wifi...");
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(1000);
+    digitalWrite(DEBUG_PIN, HIGH);
+    delay(100);
+    digitalWrite(DEBUG_PIN, LOW);
+    delay(100);
   }
   Serial.print("ok\n");
 
   Serial.print("mqtt...");
   while (!client.connect("red_button", "workshoppers", "mudapowa")) {
-    Serial.print(".");
-    delay(1000);
+    digitalWrite(DEBUG_PIN, HIGH);
+    delay(500);
+    digitalWrite(DEBUG_PIN, LOW);
+    delay(500);
   }
   Serial.print("ok\n");
 
