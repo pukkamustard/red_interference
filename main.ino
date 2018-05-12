@@ -26,20 +26,20 @@ void loop() {
   // network loop
   netLoop();
 
-
-  int buttonValue = digitalRead(BUTTON_PIN);
-  /*Serial.print(String(buttonValue));*/
-
   if (triggered) {
-    Serial.print("Boom!\n");
-    publish("Boom!");
 
-    servoSetPosition(180);
+    Project project = randomProject();
+
+    // Send the interference
+    publish(project.name);
+
+    // point towards project
+    servoSetPosition(project.angle);
+
     digitalWrite(DEBUG_PIN, HIGH);
-    delay(1500);
-    servoSetPosition(0);
+    delay(2000);
     digitalWrite(DEBUG_PIN, LOW);
     triggered = false;
   }
-  delay(20);
+  delay(50);
 }
