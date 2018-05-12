@@ -6,10 +6,10 @@ struct Project {
 };  
 
 Project projects[NUM_OF_PROJECTS] = {
-  {"televator", 180},
-  {"poetry", 130},
-  {"cardboard", 70},
-  {"park", 30}
+  {"televator", 140},
+  {"poetry", 90},
+  {"non", 70},
+  {"park", 80}
 };
 
 Project randomProject(){
