@@ -16,10 +16,12 @@ void setup() {
 
   // init servo
   servoInit();
+
+  digitalWrite(DEBUG_PIN, LOW);
 }
 
 void onPress() {
-  triggered = triggered || true; 
+  triggered = true; 
 }
 
 void loop() {
@@ -27,6 +29,7 @@ void loop() {
   netLoop();
 
   if (triggered) {
+    digitalWrite(DEBUG_PIN, HIGH);
 
     Project project = randomProject();
 
@@ -36,8 +39,7 @@ void loop() {
     // point towards project
     servoSetPosition(project.angle);
 
-    digitalWrite(DEBUG_PIN, HIGH);
-    delay(2000);
+    delay(500);
     digitalWrite(DEBUG_PIN, LOW);
     triggered = false;
   }

@@ -25,7 +25,13 @@ void netInit() {
 
 void netConnect() {
   Serial.print("wifi...");
+  if (WiFi.status() != WL_CONNECTED) {
+    WiFi.disconnect(true);
+    delay(500);
+    WiFi.begin(ssid, pass);
+  }
   while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
     digitalWrite(DEBUG_PIN, HIGH);
     delay(100);
     digitalWrite(DEBUG_PIN, LOW);
@@ -33,16 +39,25 @@ void netConnect() {
   }
   Serial.print("ok\n");
 
-  Serial.print("mqtt...");
-  while (!client.connect("red_button", "workshoppers", "mudapowa")) {
-    digitalWrite(DEBUG_PIN, HIGH);
-    delay(500);
+  Serial.print("mqtt ");
+  digitalWrite(DEBUG_PIN, HIGH);
+  bool connected = false;
+  int i = 0;
+  while (!connected && i <= 5) {
+    connected = client.connect("red_button", "workshoppers", "mudapowa");
+    i = i + 1;
+    Serial.print("+");
     digitalWrite(DEBUG_PIN, LOW);
     delay(500);
   }
-  Serial.print("ok\n");
 
-  /*client.subscribe("/temple");*/
+  if (connected){
+    Serial.print(" ok\n");
+  } else {
+    Serial.print(" not connected!\n");
+  }
+
+  client.subscribe("/red_button");
 }
 
 bool publish(String msg){
@@ -59,5 +74,7 @@ void netLoop() {
 }
 
 void messageReceived(String &topic, String &payload) {
-  Serial.println("incoming: " + topic + " - " + payload);
+  if (payload == "redbutton"){
+    triggered = true;
+  }
 }
